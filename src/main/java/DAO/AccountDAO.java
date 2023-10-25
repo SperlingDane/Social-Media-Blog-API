@@ -21,9 +21,9 @@ public class AccountDAO {
             preparedStatement.setString(2, account.getPassword());
 
             preparedStatement.executeUpdate();
-            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
-            if(pkeyResultSet.next()){
-                int generated_author_id = (int) pkeyResultSet.getLong(1);
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if(rs.next()){
+                int generated_author_id = (int) rs.getLong(1);
                 return new Account(generated_author_id, account.getUsername(), account.getPassword());
             }
         }catch(SQLException e){
@@ -41,9 +41,9 @@ public class AccountDAO {
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
 
-            ResultSet pkeyResultSet = preparedStatement.executeQuery(sql);
-            if(pkeyResultSet.first()){
-                return new Account(pkeyResultSet.getInt("account_id"), pkeyResultSet.getString("username"), pkeyResultSet.getString("password"));
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                return new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
             }
         }catch(SQLException e){
                 System.out.println(e.getMessage());
