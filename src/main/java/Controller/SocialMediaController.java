@@ -54,11 +54,12 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account addedAccount = accountService.login(account);
-        if(addedAccount == null){
-            context.status(401);
+        if(addedAccount != null){
+            context.json(mapper.writeValueAsString(addedAccount));
+            context.status(200);
         }
         else{
-            context.status(200);
+            context.status(401);
         }
     }
 
