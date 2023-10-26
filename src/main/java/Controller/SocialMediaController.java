@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import Model.Account;
 import Service.AccountService;
 
+import Model.Message;
+import Service.MessageService;
+
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
  * found in readme.md as well as the test cases. You should
@@ -25,11 +28,14 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
+        app.post("/messages", this::messagesHandler);
 
 
         return app;
     }
     AccountService accountService = new AccountService();
+    MessageService messageService = new MessageService();
+
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
@@ -62,5 +68,19 @@ public class SocialMediaController {
             context.status(401);
         }
     }
+
+    private void messagesHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+        Message addedMessage = messageService.addMessage(message);
+
+        if(addedMessage != null){
+            context.json(mapper.writeValueAsString(addedMessage));
+        }
+        else{
+            context.status(400);
+        }
+    }
+
 
 }
