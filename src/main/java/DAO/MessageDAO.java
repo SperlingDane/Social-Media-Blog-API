@@ -100,4 +100,23 @@ public class MessageDAO {
         }
         return null;
     }
+
+    public Message updateMessageDAO(int messageId, String messageText){
+        Connection connection = ConnectionUtil.getConnection();
+        try{
+            String sql = "update message set message_text = ? where message_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, messageText);
+            preparedStatement.setInt(2, messageId);
+            preparedStatement.executeUpdate();
+            Message messageExists = getMessage(messageId);
+            if(messageExists != null){
+                return messageExists;
+            }
+        }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        return null;
+    }
 }
