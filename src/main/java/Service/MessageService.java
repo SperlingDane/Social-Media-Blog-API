@@ -15,8 +15,8 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
-    public Message addMessage(Message message){
-        if(message.getMessage_text() != "" && message.getMessage_text().length() < 255){
+    public Message addMessage(Message message, Boolean exists){
+        if(message.getMessage_text() != "" && message.getMessage_text().length() < 255 && exists){
             return messageDAO.insertMessage(message);
         }
         return null;
@@ -28,5 +28,9 @@ public class MessageService {
 
     public Message getMessageById(int id){
         return messageDAO.getMessage(id);
+    }
+
+    public Message deleteMessageById(int id){
+        return messageDAO.deleteMessage(id);
     }
 }

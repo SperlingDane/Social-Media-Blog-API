@@ -52,4 +52,39 @@ public class AccountDAO {
         return null;
     }
     
+    public Boolean accountExists(int id){
+        Connection connection = ConnectionUtil.getConnection();
+        try{
+            String sql = "select * from account where account_id = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                 return true;
+            }
+        }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        return false;
+    }
+
+    public Boolean accountExists(String username){
+        Connection connection = ConnectionUtil.getConnection();
+        try{
+            String sql = "select * from account where username = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, username);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                 return true;
+            }
+        }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        return false;
+    }
 }
